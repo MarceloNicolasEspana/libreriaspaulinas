@@ -26,7 +26,5 @@ createInertiaApp({
             .mount(el);
     },
 
-    progress: {
-        color: '#1d4ed8',
-    },
+    progress: false,
 });

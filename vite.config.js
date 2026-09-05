@@ -14,6 +14,10 @@ export default defineConfig({
                 bunny('Instrument Sans', {
                     weights: [400, 500, 600],
                 }),
+                // Serif editorial para títulos y citas.
+                bunny('Lora', {
+                    weights: [500, 600, 700],
+                }),
             ],
         }),
         vue({

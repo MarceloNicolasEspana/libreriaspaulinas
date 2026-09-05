@@ -20,10 +20,26 @@ final class Money
         $formatter = new NumberFormatter(self::locale(), NumberFormatter::CURRENCY);
         $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, self::fractionDigits());
 
-        return $formatter->formatCurrency(
-            $amount / (10 ** self::fractionDigits()),
-            self::code(),
-        );
+        return $formatter->formatCurrency(self::toMajor($amount), self::code());
+    }
+
+    /**
+     * Pasa un monto de la unidad mayor de la moneda a la menor: 12990.00 => 12990.
+     *
+     * Es la conversión que hacen el modelo Product al exponer el precio y el
+     * catálogo al leer el rango de precios de la URL.
+     */
+    public static function toMinor(float|int|string $amount): int
+    {
+        return (int) round(((float) $amount) * (10 ** self::fractionDigits()));
+    }
+
+    /**
+     * Pasa un monto de la unidad menor de la moneda a la mayor: 12990 => 12990.0.
+     */
+    public static function toMajor(int $amount): float
+    {
+        return $amount / (10 ** self::fractionDigits());
     }
 
     public static function code(): string

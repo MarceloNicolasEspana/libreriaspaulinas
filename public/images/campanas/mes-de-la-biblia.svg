@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustración de una Biblia abierta iluminada">
+    <title>Mes de la Biblia</title>
+
+    <defs>
+        <linearGradient id="fondo" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="oklch(0.338 0.071 264)" />
+            <stop offset="0.55" stop-color="oklch(0.26 0.055 264)" />
+            <stop offset="1" stop-color="oklch(0.22 0.05 270)" />
+        </linearGradient>
+
+        <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="oklch(0.89 0.029 92)" stop-opacity="0.42" />
+            <stop offset="0.6" stop-color="oklch(0.725 0.076 92)" stop-opacity="0.12" />
+            <stop offset="1" stop-color="oklch(0.725 0.076 92)" stop-opacity="0" />
+        </radialGradient>
+
+        <linearGradient id="pagina" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="oklch(0.985 0.002 265)" />
+            <stop offset="1" stop-color="oklch(0.89 0.014 92)" />
+        </linearGradient>
+
+        <linearGradient id="paginaSombra" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="oklch(0.26 0.055 264)" stop-opacity="0.28" />
+            <stop offset="0.5" stop-color="oklch(0.26 0.055 264)" stop-opacity="0" />
+            <stop offset="1" stop-color="oklch(0.26 0.055 264)" stop-opacity="0.28" />
+        </linearGradient>
+    </defs>
+
+    <rect width="800" height="600" fill="url(#fondo)" />
+
+    <!-- Halo de luz sobre el libro -->
+    <circle cx="400" cy="250" r="300" fill="url(#halo)" />
+
+    <!-- Rayos: se abren desde el centro del libro hacia arriba -->
+    <g stroke="oklch(0.89 0.029 92)" stroke-opacity="0.22" stroke-width="1.5" stroke-linecap="round">
+        <path d="M400 330 L400 40" />
+        <path d="M400 330 L250 70" />
+        <path d="M400 330 L550 70" />
+        <path d="M400 330 L120 140" />
+        <path d="M400 330 L680 140" />
+        <path d="M400 330 L40 250" />
+        <path d="M400 330 L760 250" />
+    </g>
+
+    <!-- Anillos concéntricos -->
+    <g fill="none" stroke="oklch(0.725 0.076 92)" stroke-opacity="0.3">
+        <circle cx="400" cy="250" r="150" />
+        <circle cx="400" cy="250" r="205" stroke-opacity="0.16" />
+    </g>
+
+    <!-- Cruz sobria dentro del halo -->
+    <g stroke="oklch(0.89 0.029 92)" stroke-opacity="0.55" stroke-width="3" stroke-linecap="round">
+        <path d="M400 168 L400 268" />
+        <path d="M362 205 L438 205" />
+    </g>
+
+    <!-- Libro abierto -->
+    <g>
+        <path d="M400 372 C 330 330, 230 322, 148 344 L148 500 C 230 478, 330 486, 400 524 Z" fill="url(#pagina)" />
+        <path d="M400 372 C 470 330, 570 322, 652 344 L652 500 C 570 478, 470 486, 400 524 Z" fill="url(#pagina)" />
+        <path d="M400 372 C 330 330, 230 322, 148 344 L148 500 C 230 478, 330 486, 400 524 Z" fill="url(#paginaSombra)" />
+        <path d="M400 372 C 470 330, 570 322, 652 344 L652 500 C 570 478, 470 486, 400 524 Z" fill="url(#paginaSombra)" />
+
+        <!-- Lomo -->
+        <path d="M400 372 L400 524" stroke="oklch(0.472 0.097 264)" stroke-opacity="0.35" stroke-width="3" />
+
+        <!-- Líneas de texto insinuadas -->
+        <g stroke="oklch(0.472 0.097 264)" stroke-opacity="0.28" stroke-width="4" stroke-linecap="round">
+            <path d="M196 382 C 268 376, 332 386, 376 404" />
+            <path d="M196 410 C 268 404, 332 414, 376 432" />
+            <path d="M196 438 C 262 432, 320 440, 356 454" />
+            <path d="M424 404 C 468 386, 532 376, 604 382" />
+            <path d="M424 432 C 468 414, 532 404, 604 410" />
+            <path d="M424 454 C 462 440, 520 432, 584 438" />
+        </g>
+
+        <!-- Canto inferior -->
+        <path d="M148 500 C 230 478, 330 486, 400 524 C 470 486, 570 478, 652 500 L652 512 C 570 490, 470 498, 400 536 C 330 498, 230 490, 148 512 Z" fill="oklch(0.725 0.076 92)" fill-opacity="0.55" />
+    </g>
+</svg>

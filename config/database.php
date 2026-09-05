@@ -58,7 +58,10 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+            // Se fija InnoDB explícitamente: algunos servidores locales (WAMP)
+            // traen MyISAM por defecto, que limita los índices a 1000 bytes y
+            // no soporta transacciones ni claves foráneas.
+            'engine' => env('DB_ENGINE', 'InnoDB'),
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],

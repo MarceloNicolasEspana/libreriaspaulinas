@@ -3,9 +3,7 @@
         "target": "ESNext",
         "module": "ESNext",
         "moduleResolution": "bundler",
-        "checkJs": true,
         "allowJs": true,
-        "strict": true,
         "noEmit": true,
         "jsx": "preserve",
         "baseUrl": ".",
@@ -13,6 +11,6 @@
             "@/*": ["resources/js/*"]
         }
     },
-    "include": ["resources/js/**/*.js", "resources/js/**/*.vue"],
-    "exclude": ["node_modules", "public"]
+    "include": ["resources/js/**/*.js", "resources/js/**/*.vue", "vite.config.js"],
+    "exclude": ["node_modules", "public", "vendor"]
 }

@@ -17,7 +17,7 @@ return [
 
     'short_name' => 'Paulinas',
 
-    'tagline' => 'Comunicar a Cristo en la cultura de hoy',
+    'tagline' => 'Al servicio de la evangelización y la cultura',
 
     'address' => [
         'street' => 'Inés de Suárez 7639',
@@ -33,6 +33,11 @@ return [
         'distribution_email' => 'distribuidora@paulinas.cl',
     ],
 
+    /*
+     * Solo Facebook y WhatsApp están confirmados en el sitio actual. Las redes
+     * sin confirmar se dejan en null a propósito: la interfaz omite las que no
+     * tengan URL en lugar de mostrar un enlace inventado.
+     */
     'social' => [
         'facebook' => 'https://www.facebook.com/HermanasPaulinasChile',
         'instagram' => null,
@@ -55,6 +60,29 @@ return [
         'symbol' => '$',
         'locale' => 'es-CL',
         'fraction_digits' => 0,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Catálogo
+    |--------------------------------------------------------------------------
+    |
+    | Reglas de presentación del catálogo. Viven aquí y no dentro de los modelos
+    | para poder ajustarlas sin tocar código.
+    |
+    */
+
+    'catalog' => [
+
+        /*
+         * Desde cuántas unidades hacia abajo la ficha avisa "últimas unidades".
+         */
+        'low_stock_threshold' => 5,
+
+        /*
+         * Productos por página en los listados (/libros, sección, autor).
+         */
+        'per_page' => 24,
     ],
 
 ];

@@ -34,6 +34,11 @@ class HandleInertiaRequests extends Middleware
                 'social' => array_filter(config('paulinas.social')),
             ],
 
+            'navigation' => fn (): array => [
+                'primary' => config('navigation.primary'),
+                'footer' => config('navigation.footer'),
+            ],
+
             'currency' => fn (): array => config('paulinas.currency'),
 
             'auth' => [

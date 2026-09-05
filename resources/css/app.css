@@ -5,26 +5,175 @@
 @source '../js/**/*.vue';
 
 /*
- * Identidad visual. Los tonos se derivan del azul institucional de Paulinas y
- * quedan centralizados aquí: los componentes usan siempre estos tokens
- * (bg-brand-600, text-brand-700, ...) y nunca colores literales.
- */
+|------------------------------------------------------------------------------
+| Sistema visual Paulinas
+|------------------------------------------------------------------------------
+|
+| Los colores derivan del logo institucional: el rojo del wordmark "Paulinas"
+| (#DA0407) y el azul del emblema "Hijas de San Pablo" (#44577E). Las escalas se
+| construyeron en OKLCH para que el salto de luminosidad sea perceptualmente
+| uniforme, y se verificó el contraste sobre blanco:
+|
+|   accent-600  5.40:1    brand-700  6.84:1    paper-600  4.81:1   (AA)
+|
+| Los componentes usan siempre estos tokens y nunca colores literales.
+|
+*/
 @theme {
+    /* Tipografía: serif editorial para títulos, sans neutra para interfaz. */
     --font-sans:
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Lora', ui-serif, Georgia, Cambria, 'Times New Roman', serif;
 
-    --color-brand-50: oklch(0.97 0.02 258);
-    --color-brand-100: oklch(0.93 0.04 258);
-    --color-brand-200: oklch(0.87 0.07 258);
-    --color-brand-300: oklch(0.78 0.11 258);
-    --color-brand-400: oklch(0.68 0.15 258);
-    --color-brand-500: oklch(0.6 0.18 258);
-    --color-brand-600: oklch(0.52 0.19 258);
-    --color-brand-700: oklch(0.44 0.17 258);
-    --color-brand-800: oklch(0.37 0.14 258);
-    --color-brand-900: oklch(0.31 0.11 258);
+    /* Azul institucional — estructura, encabezados, navegación. */
+    --color-brand-50: oklch(0.975 0.006 264);
+    --color-brand-100: oklch(0.945 0.014 264);
+    --color-brand-200: oklch(0.89 0.029 264);
+    --color-brand-300: oklch(0.815 0.05 264);
+    --color-brand-400: oklch(0.725 0.076 264);
+    --color-brand-500: oklch(0.63 0.098 264);
+    --color-brand-600: oklch(0.552 0.105 264);
+    --color-brand-700: oklch(0.472 0.097 264);
+    --color-brand-800: oklch(0.4 0.084 264);
+    --color-brand-900: oklch(0.338 0.071 264);
+    --color-brand-950: oklch(0.26 0.055 264);
 
-    --color-accent-500: oklch(0.68 0.17 45);
-    --color-accent-600: oklch(0.6 0.18 40);
+    /* Rojo Paulinas — acción principal, acentos, estado activo. */
+    --color-accent-50: oklch(0.975 0.012 29);
+    --color-accent-100: oklch(0.945 0.026 29);
+    --color-accent-200: oklch(0.89 0.057 29);
+    --color-accent-300: oklch(0.815 0.103 29);
+    --color-accent-400: oklch(0.725 0.167 29);
+    --color-accent-500: oklch(0.63 0.216 29);
+    --color-accent-600: oklch(0.552 0.226 29);
+    --color-accent-700: oklch(0.472 0.193 29);
+    --color-accent-800: oklch(0.4 0.166 29);
+    --color-accent-900: oklch(0.338 0.14 29);
+    --color-accent-950: oklch(0.26 0.111 29);
+
+    /* Dorado pergamino — detalle editorial, uso escaso. */
+    --color-gold-100: oklch(0.945 0.014 92);
+    --color-gold-200: oklch(0.89 0.029 92);
+    --color-gold-400: oklch(0.725 0.076 92);
+    --color-gold-600: oklch(0.552 0.105 92);
+
+    /* Estados de disponibilidad — verde y ámbar sobrios, nunca fluorescentes. */
+    --color-success-50: oklch(0.965 0.022 155);
+    --color-success-600: oklch(0.552 0.09 155);
+    --color-success-700: oklch(0.472 0.08 155);
+    --color-warning-50: oklch(0.965 0.03 78);
+    --color-warning-600: oklch(0.62 0.115 72);
+    --color-warning-700: oklch(0.52 0.105 72);
+
+    /* Neutros de papel — apenas templados hacia el azul institucional. */
+    --color-paper-50: oklch(0.985 0.002 265);
+    --color-paper-100: oklch(0.945 0.002 265);
+    --color-paper-200: oklch(0.89 0.003 265);
+    --color-paper-300: oklch(0.815 0.006 265);
+    --color-paper-400: oklch(0.725 0.009 265);
+    --color-paper-500: oklch(0.63 0.011 265);
+    --color-paper-600: oklch(0.552 0.012 265);
+    --color-paper-700: oklch(0.472 0.011 265);
+    --color-paper-800: oklch(0.4 0.01 265);
+    --color-paper-900: oklch(0.338 0.008 265);
+    --color-paper-950: oklch(0.26 0.006 265);
+
+    /* Radios: suaves y editoriales, nunca de "dashboard". */
+    --radius-card: 0.75rem;
+    --radius-control: 0.5rem;
+
+    /* Sombras difusas y tintadas en azul, no grises neutras. */
+    --shadow-subtle: 0 1px 2px oklch(0.26 0.055 264 / 0.06);
+    --shadow-card: 0 1px 3px oklch(0.26 0.055 264 / 0.07), 0 8px 24px -12px oklch(0.26 0.055 264 / 0.16);
+    --shadow-raised: 0 2px 6px oklch(0.26 0.055 264 / 0.08), 0 16px 40px -16px oklch(0.26 0.055 264 / 0.22);
+
+    /* Ancho de lectura para bloques de texto largo. */
+    --container-prose: 68ch;
+
+    /* Movimiento del cargador institucional. */
+    --animate-loading-heartbeat: loading-heartbeat 2s ease-in-out infinite;
+    /* 0,6 s de giro y 0,7 s de pausa antes de repetir. */
+    --animate-loading-spin: loading-spin 1.3s infinite;
+
+    @keyframes loading-heartbeat {
+        0%,
+        100% {
+            transform: scale(1);
+        }
+
+        14% {
+            transform: scale(1.09);
+        }
+
+        28% {
+            transform: scale(0.98);
+        }
+
+        42% {
+            transform: scale(1.13);
+        }
+
+        70% {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes loading-spin {
+        0% {
+            transform: rotate(0deg);
+            animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+        }
+
+        46%,
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        /* Compensa el header fijo al saltar a un ancla. */
+        scroll-padding-top: 6rem;
+    }
+
+    body {
+        background-color: var(--color-white);
+        color: var(--color-paper-800);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    h1,
+    h2,
+    h3 {
+        font-family: var(--font-serif);
+        color: var(--color-brand-900);
+        letter-spacing: -0.01em;
+    }
+
+    /*
+     * Foco visible y consistente en todo el sitio. Se usa :focus-visible para
+     * no dibujar el anillo en clics de mouse, solo en navegación por teclado.
+     */
+    :focus-visible {
+        outline: 2px solid var(--color-accent-600);
+        outline-offset: 2px;
+        border-radius: 2px;
+    }
+
+    /* Respeta la preferencia del sistema por menos movimiento. */
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
 }
