@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../js/**/*.vue';
+
+/*
+ * Identidad visual. Los tonos se derivan del azul institucional de Paulinas y
+ * quedan centralizados aquí: los componentes usan siempre estos tokens
+ * (bg-brand-600, text-brand-700, ...) y nunca colores literales.
+ */
+@theme {
+    --font-sans:
+        'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-brand-50: oklch(0.97 0.02 258);
+    --color-brand-100: oklch(0.93 0.04 258);
+    --color-brand-200: oklch(0.87 0.07 258);
+    --color-brand-300: oklch(0.78 0.11 258);
+    --color-brand-400: oklch(0.68 0.15 258);
+    --color-brand-500: oklch(0.6 0.18 258);
+    --color-brand-600: oklch(0.52 0.19 258);
+    --color-brand-700: oklch(0.44 0.17 258);
+    --color-brand-800: oklch(0.37 0.14 258);
+    --color-brand-900: oklch(0.31 0.11 258);
+
+    --color-accent-500: oklch(0.68 0.17 45);
+    --color-accent-600: oklch(0.6 0.18 40);
+}
