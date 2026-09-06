@@ -331,8 +331,8 @@ class CatalogFiltersTest extends TestCase
 
     public function test_each_facet_is_counted_without_its_own_filter(): void
     {
-        $biblias = Category::factory()->create(['name' => 'Biblias', 'slug' => 'biblias']);
-        $ninos = Category::factory()->create(['name' => 'Niños', 'slug' => 'ninos']);
+        $biblias = Category::factory()->create(['name' => 'Biblias', 'slug' => 'biblias', 'sort_order' => 0]);
+        $ninos = Category::factory()->create(['name' => 'Niños', 'slug' => 'ninos', 'sort_order' => 1]);
 
         Product::factory()->count(2)->for($biblias)->create();
         Product::factory()->for($ninos)->create();

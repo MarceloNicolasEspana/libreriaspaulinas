@@ -27,7 +27,7 @@ const { format } = useCurrency();
 const states = {
     in_stock: { label: 'Disponible', dot: 'bg-success-600', text: 'text-success-700' },
     low_stock: { label: 'Últimas unidades', dot: 'bg-warning-600', text: 'text-warning-700' },
-    out_of_stock: { label: 'Bajo pedido', dot: 'bg-paper-400', text: 'text-paper-600' },
+    out_of_stock: { label: 'Agotado', dot: 'bg-paper-400', text: 'text-paper-600' },
 };
 
 const state = computed(() => states[props.availability] ?? states.in_stock);

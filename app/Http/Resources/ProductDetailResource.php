@@ -38,8 +38,9 @@ class ProductDetailResource extends JsonResource
             'pages' => $this->pages,
             'dimensions' => $this->dimensions,
             'availability' => $this->availability,
-            'stock' => $this->stock,
             'publishedAt' => $this->published_at?->toDateString(),
+            'canAddToCart' => $this->stock > 0,
+            'cartStoreHref' => route('cart.items.store', $this->resource, absolute: false),
 
             'authors' => $this->authors->map(fn (Author $author) => [
                 'name' => $author->name,

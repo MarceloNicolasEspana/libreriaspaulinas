@@ -1,6 +1,7 @@
 <script setup>
 import AppFooter from '@/Components/AppFooter.vue';
 import AppHeader from '@/Components/AppHeader.vue';
+import FlashMessages from '@/Components/FlashMessages.vue';
 import LoadingModal from '@/Components/LoadingModal.vue';
 </script>
 
@@ -14,6 +15,8 @@ import LoadingModal from '@/Components/LoadingModal.vue';
         </a>
 
         <AppHeader />
+
+        <FlashMessages />
 
         <main id="contenido" class="flex-1">
             <slot />

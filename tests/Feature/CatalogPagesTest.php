@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Author;
 use App\Models\Category;
+use App\Models\Collection;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
@@ -47,8 +49,16 @@ class CatalogPagesTest extends TestCase
 
     public function test_a_product_page_is_found_by_its_slug(): void
     {
-        $product = Product::factory()->create();
+        config()->set('paulinas.contact.whatsapp', '+56 9 1234 5678');
+
+        $product = Product::factory()->create([
+            'title' => 'Libro de prueba',
+            'isbn' => '978-956-00-0000-1',
+            'pages' => 144,
+            'dimensions' => '14 × 21 cm',
+        ]);
         $product->authors()->attach(Author::factory()->create());
+        ProductImage::factory()->count(2)->for($product)->create();
 
         $this->get(route('books.show', $product))
             ->assertOk()
@@ -57,9 +67,20 @@ class CatalogPagesTest extends TestCase
                     ->component('Catalog/Show')
                     ->where('product.title', $product->title)
                     ->where('product.isbn', $product->isbn)
+                    ->where('product.pages', 144)
+                    ->where('product.dimensions', '14 × 21 cm')
                     ->whereType('product.price', 'integer')
                     ->has('product.authors', 1)
                     ->has('product.category')
+                    ->has('product.publisher')
+                    ->has('product.collection')
+                    ->has('product.images', 2)
+                    ->where('product.canAddToCart', true)
+                    ->where('product.cartStoreHref', route('cart.items.store', $product, absolute: false))
+                    ->where(
+                        'whatsappUrl',
+                        'https://wa.me/56912345678?text=Hola%2C%20quisiera%20consultar%20disponibilidad%20del%20libro%20%22Libro%20de%20prueba%22%2C%20ISBN%20978-956-00-0000-1.',
+                    )
                     ->has('related')
             );
     }
@@ -89,6 +110,30 @@ class CatalogPagesTest extends TestCase
 
         $this->assertCount(2, $related);
         $this->assertNotContains($product->id, array_column($related, 'id'));
+    }
+
+    public function test_related_titles_can_share_category_collection_or_author(): void
+    {
+        $category = Category::factory()->create();
+        $collection = Collection::factory()->create();
+        $author = Author::factory()->create();
+        $product = Product::factory()->for($category)->for($collection)->create();
+        $product->authors()->attach($author);
+
+        $sameCategory = Product::factory()->for($category)->create(['title' => 'Solo categoría']);
+        $sameCollection = Product::factory()->for($collection)->create(['title' => 'Solo colección']);
+        $sameAuthor = Product::factory()->create(['title' => 'Solo autor']);
+        $sameAuthor->authors()->attach($author);
+        Product::factory()->create(['title' => 'Sin relación']);
+
+        $related = $this->get(route('books.show', $product))->viewData('page')['props']['related'];
+        $relatedIds = array_column($related, 'id');
+
+        $this->assertEqualsCanonicalizing(
+            [$sameCategory->id, $sameCollection->id, $sameAuthor->id],
+            $relatedIds,
+        );
+        $this->assertNotContains($product->id, $relatedIds);
     }
 
     public function test_a_section_shows_its_own_titles_and_those_of_its_subsections(): void

@@ -42,7 +42,7 @@ return new class extends Migration
             $table->unsignedInteger('stock')->default(0);
 
             // Visible en el sitio. Un producto agotado sigue activo: la ficha se
-            // muestra y el estado pasa a "bajo pedido".
+            // muestra y el estado pasa a "agotado".
             $table->boolean('active')->default(true);
             $table->boolean('featured')->default(false);
             $table->boolean('new_release')->default(false);

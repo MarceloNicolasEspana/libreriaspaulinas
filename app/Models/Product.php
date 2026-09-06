@@ -111,7 +111,7 @@ class Product extends Model
     }
 
     /**
-     * Estado que muestra la tarjeta: disponible, últimas unidades o bajo pedido.
+     * Estado que muestra la tienda: disponible, últimas unidades o agotado.
      */
     protected function availability(): Attribute
     {

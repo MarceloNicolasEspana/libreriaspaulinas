@@ -20,6 +20,9 @@ class DatabaseSeeder extends Seeder
             CollectionSeeder::class,
             AuthorSeeder::class,
             ProductSeeder::class,
+            ResourceCategorySeeder::class,
+            ResourceSeeder::class,
+            PostSeeder::class,
         ]);
     }
 }

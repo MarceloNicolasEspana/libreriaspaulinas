@@ -29,6 +29,7 @@ const searchOpen = ref(false);
  */
 const page = usePage();
 const searchTerm = computed(() => page.props.filters?.q ?? '');
+const cartSummary = computed(() => page.props.cartSummary ?? { count: 0, href: '/carrito' });
 </script>
 
 <template>
@@ -82,7 +83,7 @@ const searchTerm = computed(() => page.props.filters?.q ?? '');
                     </li>
 
                     <li>
-                        <HeaderAction label="Carrito de compras">
+                        <HeaderAction label="Carrito de compras" :href="cartSummary.href" :count="cartSummary.count">
                             <CartIcon class="size-5.5" />
                         </HeaderAction>
                     </li>

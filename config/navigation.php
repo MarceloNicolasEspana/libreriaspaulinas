@@ -56,10 +56,10 @@ return [
         [
             'heading' => 'Recursos',
             'links' => [
-                ['label' => 'Profesores', 'href' => '/recursos/profesores'],
-                ['label' => 'Catequistas', 'href' => '/recursos/catequistas'],
-                ['label' => 'Descargas', 'href' => '/recursos/descargas'],
-                ['label' => 'Formación', 'href' => '/recursos/formacion'],
+                ['label' => 'Profesores', 'href' => '/recursos?categoria=profesores-de-religion'],
+                ['label' => 'Catequistas', 'href' => '/recursos?categoria=catequistas'],
+                ['label' => 'Descargas', 'href' => '/recursos?categoria=documentos'],
+                ['label' => 'Formación', 'href' => '/recursos?categoria=formacion'],
             ],
         ],
     ],

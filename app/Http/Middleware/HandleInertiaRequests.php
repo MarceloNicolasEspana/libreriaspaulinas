@@ -2,11 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Cart\Cart;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
+    public function __construct(private Cart $cart) {}
+
     /**
      * Plantilla Blade que envuelve la aplicación Vue.
      */
@@ -40,6 +43,11 @@ class HandleInertiaRequests extends Middleware
             ],
 
             'currency' => fn (): array => config('paulinas.currency'),
+
+            'cartSummary' => fn (): array => [
+                'count' => $this->cart->count(),
+                'href' => route('cart.index', absolute: false),
+            ],
 
             'auth' => [
                 'user' => $request->user(),

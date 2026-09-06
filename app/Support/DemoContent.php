@@ -68,37 +68,37 @@ final class DemoContent
             [
                 'title' => 'Planificaciones',
                 'description' => 'Unidades y clases listas para adaptar al calendario escolar.',
-                'href' => '/recursos/planificaciones',
+                'href' => '/recursos?categoria=planificaciones',
                 'icon' => 'clipboard',
             ],
             [
                 'title' => 'Material descargable',
                 'description' => 'Fichas, guías e imágenes para imprimir y trabajar en sala.',
-                'href' => '/recursos/descargables',
+                'href' => '/recursos?categoria=documentos',
                 'icon' => 'download',
             ],
             [
                 'title' => 'Recursos pastorales',
                 'description' => 'Subsidios para animar celebraciones, retiros y encuentros.',
-                'href' => '/recursos/pastorales',
+                'href' => '/recursos?categoria=pastoral',
                 'icon' => 'heart',
             ],
             [
                 'title' => 'Formación',
                 'description' => 'Itinerarios para el crecimiento de agentes pastorales.',
-                'href' => '/recursos/formacion',
+                'href' => '/recursos?categoria=formacion',
                 'icon' => 'graduation',
             ],
             [
                 'title' => 'Programas de religión',
                 'description' => 'Propuestas por nivel para el año escolar completo.',
-                'href' => '/recursos/programas-de-religion',
+                'href' => '/recursos?categoria=profesores-de-religion',
                 'icon' => 'calendar',
             ],
             [
                 'title' => 'Recursos bíblicos',
                 'description' => 'Itinerarios, mapas y claves de lectura de la Escritura.',
-                'href' => '/recursos/biblicos',
+                'href' => '/recursos?categoria=biblia',
                 'icon' => 'book',
             ],
         ];

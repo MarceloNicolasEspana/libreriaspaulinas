@@ -10,6 +10,8 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Support\Catalog\CatalogFilters;
 use App\Support\Catalog\CatalogOptions;
+use App\Support\Whatsapp;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -77,6 +79,7 @@ class BookController extends Controller
             // entregara sin resolver, y la página espera el objeto plano.
             'product' => (new ProductDetailResource($product))->resolve(),
             'related' => $this->related($request, $product),
+            'whatsappUrl' => Whatsapp::availabilityUrl($product),
         ]);
     }
 
@@ -142,24 +145,44 @@ class BookController extends Controller
     }
 
     /**
-     * Otros títulos de la misma sección.
+     * Otros títulos que compartan categoría, colección o autor.
      *
      * @return array<int, array<string, mixed>>
      */
     private function related(Request $request, Product $product): array
     {
-        if ($product->category_id === null) {
+        $authorIds = $product->authors->modelKeys();
+
+        if ($product->category_id === null && $product->collection_id === null && $authorIds === []) {
             return [];
         }
 
         return Product::query()
             ->active()
-            ->where('category_id', $product->category_id)
             ->whereKeyNot($product->getKey())
+            ->where(function (Builder $query) use ($product, $authorIds): void {
+                $query
+                    ->when(
+                        $product->category_id !== null,
+                        fn (Builder $query): Builder => $query->orWhere('category_id', $product->category_id),
+                    )
+                    ->when(
+                        $product->collection_id !== null,
+                        fn (Builder $query): Builder => $query->orWhere('collection_id', $product->collection_id),
+                    )
+                    ->when(
+                        $authorIds !== [],
+                        fn (Builder $query): Builder => $query->orWhereHas(
+                            'authors',
+                            fn (Builder $query): Builder => $query->whereKey($authorIds),
+                        ),
+                    );
+            })
             ->select(ProductCardResource::COLUMNS)
             ->with(ProductCardResource::RELATIONS)
-            ->inRandomOrder()
-            ->limit(4)
+            ->orderBy('title')
+            ->orderBy('products.id')
+            ->limit(8)
             ->get()
             ->map(fn (Product $related) => (new ProductCardResource($related))->toArray($request))
             ->all();
