@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
-import { Form, Head, Link } from '@inertiajs/vue3';
+import { Form, Link } from '@inertiajs/vue3';
+import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import Button from '@/Components/Button.vue';
 import Container from '@/Components/Container.vue';
 import WhatsappIcon from '@/Components/Icons/WhatsappIcon.vue';
@@ -40,24 +41,8 @@ const specs = computed(() =>
 </script>
 
 <template>
-    <Head :title="seo.title">
-        <meta name="description" :content="seo.description" />
-    </Head>
-
     <Container class="py-10 sm:py-14 lg:py-16">
-        <nav v-if="product.category" class="mb-8 text-sm text-paper-600" aria-label="Migas de pan">
-            <Link href="/libros" class="transition-colors hover:text-accent-700">Libros</Link>
-            <template v-if="product.category.parent">
-                <span aria-hidden="true"> · </span>
-                <Link :href="product.category.parent.href" class="transition-colors hover:text-accent-700">
-                    {{ product.category.parent.name }}
-                </Link>
-            </template>
-            <span aria-hidden="true"> · </span>
-            <Link :href="product.category.href" class="transition-colors hover:text-accent-700">
-                {{ product.category.name }}
-            </Link>
-        </nav>
+        <Breadcrumbs :items="seo.breadcrumbs" />
 
         <div class="grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
             <ProductGallery

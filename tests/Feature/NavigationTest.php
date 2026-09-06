@@ -9,8 +9,20 @@ use Tests\TestCase;
 
 class NavigationTest extends TestCase
 {
-    // La portada consulta el catálogo: basta con que existan las tablas.
     use RefreshDatabase;
+
+    /**
+     * Los enlaces del menú apuntan a secciones y librerías reales, así que el
+     * caso parte del catálogo completo. Se siembra aquí y no con $seed: con
+     * SQLite en memoria ese atributo solo tiene efecto en la primera clase del
+     * proceso.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed();
+    }
 
     public function test_it_shares_the_navigation_structure_with_every_page(): void
     {
@@ -43,10 +55,23 @@ class NavigationTest extends TestCase
         return $hrefs->map(fn (string $href) => [$href])->values()->all();
     }
 
+    /**
+     * Un enlace del menú puede responder 200 o, si la sección se movió, una
+     * redirección permanente a su nueva dirección; lo que no puede es 404.
+     */
     #[DataProvider('navigationHrefProvider')]
     public function test_every_navigation_link_resolves(string $href): void
     {
-        $this->get($href)->assertOk();
+        $response = $this->get($href);
+
+        if ($response->isRedirect()) {
+            $this->assertSame(301, $response->getStatusCode(), "{$href} redirige sin ser permanente.");
+            $this->followRedirects($response)->assertOk();
+
+            return;
+        }
+
+        $response->assertOk("El enlace {$href} del menú no resuelve.");
     }
 
     public function test_unknown_urls_still_return_not_found(): void

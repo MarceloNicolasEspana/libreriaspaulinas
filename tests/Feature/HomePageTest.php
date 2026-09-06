@@ -6,7 +6,6 @@ use App\Models\Product;
 use App\Support\DemoContent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia;
-use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class HomePageTest extends TestCase
@@ -142,29 +141,46 @@ class HomePageTest extends TestCase
 
     public function test_each_branch_card_has_the_data_it_needs(): void
     {
-        foreach (DemoContent::branches() as $branch) {
-            foreach (['name', 'city', 'address', 'hours', 'phone', 'whatsapp', 'href'] as $field) {
+        $response = $this->get(route('home'));
+
+        foreach ($response->viewData('page')['props']['branches'] as $branch) {
+            foreach (['name', 'commune', 'address', 'hours', 'href'] as $field) {
+                $this->assertNotEmpty($branch[$field] ?? null, "Falta \"{$field}\" en una tarjeta de librería.");
+            }
+
+            // El teléfono y el WhatsApp son opcionales: no toda librería los
+            // publica. La tarjeta debe recibir la clave igual, para decidir si
+            // muestra el enlace de contacto.
+            foreach (['phone', 'whatsapp', 'phoneUrl', 'whatsappUrl'] as $field) {
                 $this->assertArrayHasKey($field, $branch);
-                $this->assertNotEmpty($branch[$field]);
             }
         }
     }
 
     /**
-     * Ningún enlace de la portada puede terminar en un 404 durante la demo.
+     * Ningún enlace interno de la portada puede terminar en un 404.
      *
-     * @return array<int, array{string}>
+     * Se recorre la portada ya renderizada en vez de una lista fija: así el
+     * caso cubre las campañas, los accesos a recursos, las secciones, las
+     * tarjetas de producto y las librerías con los datos que se publican.
      */
-    public static function homeLinkProvider(): array
+    public function test_every_link_shown_on_the_home_page_resolves(): void
     {
-        return collect(array_keys(DemoContent::placeholderLinks()))
-            ->map(fn (string $href) => [$href])
-            ->all();
-    }
+        $props = $this->get(route('home'))->viewData('page')['props'];
 
-    #[DataProvider('homeLinkProvider')]
-    public function test_every_link_shown_on_the_home_page_resolves(string $href): void
-    {
-        $this->get($href)->assertOk();
+        $hrefs = collect($props['heroBanners'])->where('active', true)->pluck('buttonHref')
+            ->concat(collect($props['resources'])->pluck('href'))
+            ->concat(collect($props['categories'])->pluck('href'))
+            ->concat(collect($props['branches'])->pluck('href'))
+            ->concat(collect($props['newReleases'])->pluck('href'))
+            ->concat(collect($props['featured'])->pluck('href'))
+            ->filter()
+            ->unique();
+
+        $this->assertNotEmpty($hrefs);
+
+        foreach ($hrefs as $href) {
+            $this->get($href)->assertOk("El enlace {$href} de la portada no resuelve.");
+        }
     }
 }

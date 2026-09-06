@@ -2,6 +2,7 @@
 
 namespace App\Support\Catalog;
 
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -51,7 +52,7 @@ final class ProductSearch
      * "biblia niños" exige que ambas palabras aparezcan en alguna parte de la
      * ficha, que es lo que espera quien escribe dos palabras.
      *
-     * @param  Builder<\App\Models\Product>  $query
+     * @param  Builder<Product>  $query
      */
     public static function apply(Builder $query, string $search): void
     {
@@ -67,7 +68,7 @@ final class ProductSearch
      * ordenar en PHP. Es deliberadamente simple: coincidencia de ISBN, título
      * exacto, título que empieza por el término y título que lo contiene.
      *
-     * @param  Builder<\App\Models\Product>  $query
+     * @param  Builder<Product>  $query
      */
     public static function applyRelevance(Builder $query, string $search): void
     {
@@ -100,7 +101,7 @@ final class ProductSearch
     }
 
     /**
-     * @param  Builder<\App\Models\Product>  $query
+     * @param  Builder<Product>  $query
      */
     private static function matchTerm(Builder $query, string $term): void
     {

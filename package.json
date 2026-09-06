@@ -5,6 +5,7 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
+        "test": "node --test \"tests/Frontend/**/*.test.js\"",
         "lint": "eslint resources/js eslint.config.js vite.config.js",
         "lint:fix": "eslint resources/js eslint.config.js vite.config.js --fix",
         "format": "prettier --write resources/js resources/css",

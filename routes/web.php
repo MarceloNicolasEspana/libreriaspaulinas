@@ -1,15 +1,18 @@
 <?php
 
+use App\Http\Controllers\Public\AboutController;
 use App\Http\Controllers\Public\AuthorController;
 use App\Http\Controllers\Public\BookController;
+use App\Http\Controllers\Public\BranchController;
 use App\Http\Controllers\Public\CartController;
 use App\Http\Controllers\Public\CartItemController;
 use App\Http\Controllers\Public\CategoryController;
+use App\Http\Controllers\Public\ContactController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\PostController;
 use App\Http\Controllers\Public\ResourceController;
-use App\Http\Controllers\Public\SectionPlaceholderController;
-use App\Support\DemoContent;
+use App\Http\Controllers\Public\RobotsController;
+use App\Http\Controllers\Public\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +25,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', HomeController::class)->name('home');
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('/robots.txt', RobotsController::class)->name('robots');
+
+Route::get('/quienes-somos', AboutController::class)->name('about');
+Route::redirect('/nuestra-mision', '/quienes-somos#nuestra-mision', 301);
+Route::get('/contacto', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contacto', [ContactController::class, 'store'])->middleware('throttle:6,1')->name('contact.store');
+Route::get('/librerias', [BranchController::class, 'index'])->name('branches.index');
+Route::get('/librerias/{branch}', [BranchController::class, 'show'])->name('branches.show');
+
+require __DIR__.'/admin.php';
 
 Route::get('/recursos', [ResourceController::class, 'index'])->name('resources.index');
 Route::get('/recursos/{resource}/descargar', [ResourceController::class, 'download'])->name('resources.download');
@@ -48,39 +62,3 @@ Route::get('/carrito', CartController::class)->name('cart.index');
 Route::post('/carrito/items/{product}', [CartItemController::class, 'store'])->name('cart.items.store');
 Route::patch('/carrito/items/{product}', [CartItemController::class, 'update'])->name('cart.items.update');
 Route::delete('/carrito/items/{product}', [CartItemController::class, 'destroy'])->name('cart.items.destroy');
-
-/*
- * Secciones anunciadas en la navegación y enlazadas desde la portada que
- * todavía no tienen contenido propio.
- *
- * Se registran explícitamente (y no con un comodín) para que una URL inexistente
- * siga devolviendo 404. A medida que cada sección reciba su controlador propio,
- * se retira de esta lista: las rutas ya registradas arriba se descartan solas.
- */
-$claimed = collect(Route::getRoutes()->getRoutes())
-    ->map(fn ($route) => '/'.ltrim($route->uri(), '/'))
-    ->all();
-
-$pendingSections = collect(config('navigation.primary'))
-    ->concat(collect(config('navigation.footer'))->flatMap(fn (array $column) => $column['links']))
-    ->pluck('href')
-    ->concat(array_keys(DemoContent::placeholderLinks()))
-    ->unique()
-    ->reject(fn (string $path) => str_starts_with($path, '/recursos'))
-    ->reject(fn (string $path) => in_array($path, $claimed, strict: true));
-
-foreach ($pendingSections as $path) {
-    Route::get($path, SectionPlaceholderController::class);
-}
-
-/*
-|--------------------------------------------------------------------------
-| Panel administrativo
-|--------------------------------------------------------------------------
-|
-| Preparado para la fase de administración. Las rutas se registrarán aquí
-| bajo el prefijo "admin." cuando exista autenticación.
-|
-*/
-
-// Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(base_path('routes/admin.php'));

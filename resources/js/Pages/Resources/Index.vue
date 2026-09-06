@@ -1,10 +1,12 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import Container from '@/Components/Container.vue';
 import ResourceCard from '@/Components/ResourceCard.vue';
 import Pagination from '@/Components/Pagination.vue';
 import EmptyState from '@/Components/EmptyState.vue';
 defineProps({
+    seo: { type: Object, required: true },
     resources: { type: Object, required: true },
     categories: { type: Array, required: true },
     selectedCategory: { type: String, required: true },
@@ -13,12 +15,9 @@ defineProps({
 </script>
 <template>
     <div>
-        <Head title="Recursos educativos y pastorales"
-            ><meta
-                name="description"
-                content="Materiales para acompañar la catequesis, la educación religiosa y la vida pastoral."
-        /></Head>
         <Container class="py-14 sm:py-20">
+            <Breadcrumbs :items="seo.breadcrumbs" />
+
             <header class="mb-10 max-w-3xl">
                 <p class="text-sm font-semibold tracking-widest text-accent-700 uppercase">Para enseñar y compartir</p>
                 <h1 class="mt-3 font-serif text-4xl text-brand-950 sm:text-5xl">Recursos que acompañan</h1>

@@ -1,5 +1,5 @@
 <script setup>
-import { Head } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import BranchCard from '@/Components/BranchCard.vue';
 import Button from '@/Components/Button.vue';
 import CategoryCard from '@/Components/CategoryCard.vue';
@@ -14,7 +14,7 @@ import SectionHeader from '@/Components/SectionHeader.vue';
  * Todo el contenido llega del servidor. Mientras no exista el catálogo real, su
  * origen es App\Support\DemoContent; la portada no conoce esa diferencia.
  */
-defineProps({
+const props = defineProps({
     seo: { type: Object, required: true },
     heroBanners: { type: Array, default: () => [] },
     newReleases: { type: Array, default: () => [] },
@@ -23,18 +23,24 @@ defineProps({
     resources: { type: Array, default: () => [] },
     branches: { type: Array, default: () => [] },
 });
+
+/*
+ * El único h1 de la portada es el titular del hero, y el hero solo aparece si
+ * hay una campaña activa. Pausarlas todas es un cambio de dato perfectamente
+ * posible, y dejaría la página sin encabezado de primer nivel: en ese caso se
+ * pone uno para lectores de pantalla, y el esquema de encabezados se sostiene.
+ */
+const hasActiveBanner = computed(() => props.heroBanners.some((banner) => banner.active));
 </script>
 
 <template>
-    <Head :title="seo.title">
-        <meta name="description" :content="seo.description" />
-    </Head>
-
     <!--
         Se recorren todas las campañas configuradas: HeroBanner omite las que
         están inactivas, de modo que se espera una sola visible a la vez.
     -->
     <HeroBanner v-for="banner in heroBanners" :key="banner.id" v-bind="banner" />
+
+    <h1 v-if="!hasActiveBanner" class="sr-only">Librerías Paulinas Chile</h1>
 
     <!-- Novedades -->
     <Container as="section" class="py-14 sm:py-16 lg:py-20">
@@ -133,11 +139,6 @@ defineProps({
                 <BranchCard v-bind="branch" />
             </li>
         </ul>
-
-        <p class="mt-6 text-xs text-paper-600">
-            Direcciones, horarios y teléfonos son referenciales y se completarán con la información oficial de cada
-            librería.
-        </p>
     </Container>
 
     <!-- Newsletter -->

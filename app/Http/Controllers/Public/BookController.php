@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Support\Catalog\CatalogFilters;
 use App\Support\Catalog\CatalogOptions;
+use App\Support\Seo;
 use App\Support\Whatsapp;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class BookController extends Controller
         );
 
         return Inertia::render('Catalog/Index', [
-            'seo' => $this->seo($filters),
+            'seo' => $this->seo($request, $filters),
             'heading' => $filters->search() !== null ? 'Resultados de búsqueda' : 'Libros',
             'subtitle' => $filters->search() !== null
                 ? "Títulos que coinciden con «{$filters->search()}»."
@@ -70,11 +71,15 @@ class BookController extends Controller
         $product->load(ProductDetailResource::RELATIONS);
 
         return Inertia::render('Catalog/Show', [
-            'seo' => [
-                'title' => $product->title,
-                'description' => $product->short_description
-                    ?? "{$product->title}, disponible en Librerías Paulinas Chile.",
-            ],
+            'seo' => Seo::page(
+                $request,
+                $product->title,
+                $product->short_description ?? "{$product->title}, disponible en Librerías Paulinas Chile.",
+                $this->productBreadcrumbs($product),
+                array_values(array_filter([Seo::product($product), Seo::book($product)])),
+                $product->images->first()?->url,
+                'product',
+            ),
             // resolve(): Inertia envolvería el recurso en "data" si se le
             // entregara sin resolver, y la página espera el objeto plano.
             'product' => (new ProductDetailResource($product))->resolve(),
@@ -89,27 +94,48 @@ class BookController extends Controller
      *
      * @return array<string, string>
      */
-    private function seo(CatalogFilters $filters): array
+    private function seo(Request $request, CatalogFilters $filters): array
     {
         if (($search = $filters->search()) !== null) {
-            return [
-                'title' => "Búsqueda: {$search}",
-                'description' => "Resultados para «{$search}» en el catálogo de Librerías Paulinas Chile.",
-            ];
+            return Seo::page(
+                $request,
+                "Búsqueda: {$search}",
+                "Resultados para «{$search}» en el catálogo de Librerías Paulinas Chile.",
+                [['name' => 'Inicio', 'href' => '/'], ['name' => 'Libros', 'href' => '/libros']],
+                noindex: true,
+            );
         }
 
         if (($category = $filters->record('categoria')) !== null) {
-            return [
-                'title' => "Libros de {$category->name}",
-                'description' => "Títulos de {$category->name} en el catálogo de Librerías Paulinas Chile.",
-            ];
+            return Seo::page(
+                $request,
+                "Libros de {$category->name}",
+                "Títulos de {$category->name} en el catálogo de Librerías Paulinas Chile.",
+                [['name' => 'Inicio', 'href' => '/'], ['name' => 'Libros', 'href' => '/libros']],
+            );
         }
 
-        return [
-            'title' => 'Libros',
-            'description' => 'Catálogo de libros de Librerías Paulinas Chile: Biblias, '
-                .'catequesis, espiritualidad, liturgia y formación.',
-        ];
+        return Seo::page(
+            $request,
+            'Libros',
+            'Catálogo de libros de Librerías Paulinas Chile: Biblias, catequesis, espiritualidad, liturgia y formación.',
+            [['name' => 'Inicio', 'href' => '/'], ['name' => 'Libros', 'href' => '/libros']],
+        );
+    }
+
+    /** @return array<int, array{name: string, href: string}> */
+    private function productBreadcrumbs(Product $product): array
+    {
+        $items = [['name' => 'Inicio', 'href' => '/'], ['name' => 'Libros', 'href' => '/libros']];
+        if ($product->category?->parent) {
+            $items[] = ['name' => $product->category->parent->name, 'href' => route('categories.show', $product->category->parent, absolute: false)];
+        }
+        if ($product->category) {
+            $items[] = ['name' => $product->category->name, 'href' => route('categories.show', $product->category, absolute: false)];
+        }
+        $items[] = ['name' => $product->title, 'href' => route('books.show', $product, absolute: false)];
+
+        return $items;
     }
 
     /**

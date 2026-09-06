@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\EducationalResource;
 use App\Models\Resource;
 use App\Models\ResourceCategory;
+use App\Support\Seo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -23,6 +24,12 @@ class ResourceController extends Controller
             ->through(fn (Resource $resource) => (new EducationalResource($resource))->resolve($request));
 
         return Inertia::render('Resources/Index', [
+            'seo' => Seo::page(
+                $request,
+                'Recursos educativos y pastorales',
+                'Materiales para acompañar la catequesis, la educación religiosa y la vida pastoral.',
+                [['name' => 'Inicio', 'href' => '/'], ['name' => 'Recursos', 'href' => '/recursos']],
+            ),
             'resources' => $resources,
             'selectedCategory' => $categorySlug,
             'indexHref' => route('resources.index', absolute: false),
@@ -39,8 +46,19 @@ class ResourceController extends Controller
         $resource->load('category');
 
         return Inertia::render('Resources/Show', [
+            'seo' => Seo::page(
+                $request,
+                $resource->title,
+                $resource->description,
+                [
+                    ['name' => 'Inicio', 'href' => '/'],
+                    ['name' => 'Recursos', 'href' => '/recursos'],
+                    ['name' => $resource->title, 'href' => route('resources.show', $resource, absolute: false)],
+                ],
+                image: $resource->thumbnail ? Storage::disk('public')->url($resource->thumbnail) : null,
+                type: 'article',
+            ),
             'resource' => (new EducationalResource($resource))->resolve($request),
-            'indexHref' => route('resources.index', absolute: false),
         ]);
     }
 

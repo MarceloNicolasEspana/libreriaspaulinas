@@ -23,12 +23,19 @@ watch(
 <template>
     <div>
         <div v-if="selectedImage" class="aspect-[3/4] overflow-hidden rounded-card bg-paper-50 shadow-card">
-            <img :src="selectedImage.path" :alt="selectedImage.alt" class="size-full object-contain" />
+            <img
+                :src="selectedImage.path"
+                :alt="selectedImage.alt"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                class="size-full object-contain"
+            />
         </div>
 
-        <BookCover v-else :title="title" :author="author" :category="category" />
+        <BookCover v-else :title="title" :author="author" :category="category" loading="eager" />
 
-        <div v-if="images.length > 1" class="mt-4 grid grid-cols-4 gap-3" aria-label="Galería del libro">
+        <div v-if="images.length > 1" role="group" class="mt-4 grid grid-cols-4 gap-3" aria-label="Galería del libro">
             <button
                 v-for="(image, index) in images"
                 :key="image.path"
@@ -39,7 +46,13 @@ watch(
                 :aria-pressed="index === selectedIndex"
                 @click="selectedIndex = index"
             >
-                <img :src="image.path" :alt="image.alt" class="size-full object-cover" />
+                <img
+                    :src="image.path"
+                    :alt="image.alt"
+                    loading="lazy"
+                    decoding="async"
+                    class="size-full object-cover"
+                />
             </button>
         </div>
     </div>

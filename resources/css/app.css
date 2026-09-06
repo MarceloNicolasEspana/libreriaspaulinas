@@ -16,6 +16,11 @@
 |
 |   accent-600  5.40:1    brand-700  6.84:1    paper-600  4.81:1   (AA)
 |
+| paper-600 es el tono más claro admitido para texto. paper-500 (3.50:1) queda
+| reservado a iconos y separadores decorativos, donde el mínimo exigible es
+| 3:1; paper-400 (2.44:1) no alcanza ninguno de los dos y solo sirve de fondo
+| o de borde.
+|
 | Los componentes usan siempre estos tokens y nunca colores literales.
 |
 */

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Public\Concerns\ListsProducts;
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\Seo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -31,11 +32,17 @@ class CategoryController extends Controller
         );
 
         return Inertia::render('Catalog/Category', [
-            'seo' => [
-                'title' => $category->name,
-                'description' => $category->description
-                    ?? "Títulos de {$category->name} en Librerías Paulinas Chile.",
-            ],
+            'seo' => Seo::page(
+                $request,
+                $category->name,
+                $category->description ?? "Títulos de {$category->name} en Librerías Paulinas Chile.",
+                array_values(array_filter([
+                    ['name' => 'Inicio', 'href' => '/'],
+                    ['name' => 'Libros', 'href' => '/libros'],
+                    $category->parent ? ['name' => $category->parent->name, 'href' => route('categories.show', $category->parent, absolute: false)] : null,
+                    ['name' => $category->name, 'href' => route('categories.show', $category, absolute: false)],
+                ])),
+            ),
             'category' => [
                 'name' => $category->name,
                 'description' => $category->description,

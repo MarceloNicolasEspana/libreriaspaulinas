@@ -34,7 +34,7 @@ class ProductCardResource extends JsonResource
             'price' => $this->price_minor,
 
             'availability' => $this->availability,
-            'cover' => $this->cover?->path,
+            'cover' => $this->cover?->url,
             'href' => route('books.show', $this->resource, absolute: false),
         ];
     }

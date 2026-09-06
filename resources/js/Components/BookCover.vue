@@ -13,6 +13,12 @@ const props = defineProps({
     author: { type: String, default: null },
     category: { type: String, default: null },
     image: { type: String, default: null },
+    /*
+     * Las portadas de una cuadrícula se cargan a medida que se acercan a la
+     * vista. La ficha de producto, donde la portada es el elemento principal,
+     * pide "eager" para no retrasar el mayor elemento visible.
+     */
+    loading: { type: String, default: 'lazy', validator: (value) => ['lazy', 'eager'].includes(value) },
 });
 
 /*
@@ -43,7 +49,15 @@ const palette = computed(() => {
         class="relative aspect-[3/4] overflow-hidden rounded-l-sm rounded-r-card bg-brand-900 shadow-card"
         :class="image ? '' : ['bg-linear-to-br', palette]"
     >
-        <img v-if="image" :src="image" :alt="`Portada de ${title}`" class="size-full object-cover" />
+        <img
+            v-if="image"
+            :src="image"
+            :alt="`Portada de ${title}`"
+            :loading="loading"
+            :fetchpriority="loading === 'eager' ? 'high' : 'auto'"
+            decoding="async"
+            class="size-full object-cover"
+        />
 
         <template v-else>
             <!-- Lomo: da volumen al bloque sin recurrir a una fotografía. -->

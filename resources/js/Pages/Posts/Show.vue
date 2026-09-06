@@ -1,17 +1,20 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import Container from '@/Components/Container.vue';
-defineProps({ post: { type: Object, required: true }, indexHref: { type: String, required: true } });
+defineProps({
+    seo: { type: Object, required: true },
+    post: { type: Object, required: true },
+    indexHref: { type: String, required: true },
+});
 </script>
 <template>
     <div>
-        <Head :title="post.title"><meta name="description" :content="post.excerpt" /></Head>
         <Container class="py-14 sm:py-20">
             <article class="mx-auto max-w-3xl">
-                <Link :href="indexHref" class="text-sm text-brand-800 underline underline-offset-4"
-                    >Volver a novedades</Link
-                >
-                <header class="mt-10 flex flex-col gap-6">
+                <Breadcrumbs :items="seo.breadcrumbs" />
+
+                <header class="flex flex-col gap-6">
                     <time
                         :datetime="post.published_at"
                         class="text-sm font-semibold tracking-widest text-accent-700 uppercase"
@@ -24,6 +27,8 @@ defineProps({ post: { type: Object, required: true }, indexHref: { type: String,
                     v-if="post.image"
                     :src="post.image"
                     :alt="post.title"
+                    loading="lazy"
+                    decoding="async"
                     class="mt-10 aspect-[16/10] w-full object-cover"
                 />
                 <div class="mt-10 border-t border-paper-200 pt-10">

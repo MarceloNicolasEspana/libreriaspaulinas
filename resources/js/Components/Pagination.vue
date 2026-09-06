@@ -57,7 +57,7 @@ const isVisible = computed(() => props.links.filter((link) => link.url !== null)
                     {{ page.label }}
                 </Link>
 
-                <span v-else class="inline-flex min-w-9 items-center justify-center px-3 py-2 text-sm text-paper-400">
+                <span v-else class="inline-flex min-w-9 items-center justify-center px-3 py-2 text-sm text-paper-600">
                     {{ page.label }}
                 </span>
             </li>

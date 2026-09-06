@@ -60,7 +60,7 @@ class ProductDetailResource extends JsonResource
             'collection' => $this->collection?->only('name', 'slug'),
 
             'images' => $this->images->map(fn (ProductImage $image) => [
-                'path' => $image->path,
+                'path' => $image->url,
                 'alt' => $image->alt ?? $this->title,
             ])->all(),
         ];

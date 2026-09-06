@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BranchResource;
 use App\Http\Resources\ProductCardResource;
+use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Product;
 use App\Support\DemoContent;
+use App\Support\Seo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
@@ -33,18 +36,19 @@ class HomeController extends Controller
     public function __invoke(Request $request): Response
     {
         return Inertia::render('Home', [
-            'seo' => [
-                'title' => 'Inicio',
-                'description' => 'Librerías Paulinas Chile: libros, material pastoral y recursos '
-                    .'para la evangelización y la educación religiosa.',
-            ],
+            'seo' => Seo::page(
+                $request,
+                'Inicio',
+                'Librerías Paulinas Chile: libros, material pastoral y recursos para la evangelización y la educación religiosa.',
+                schemas: [Seo::organization()],
+            ),
 
             'heroBanners' => DemoContent::heroBanners(),
             'newReleases' => $this->cards($request, fn (Builder $query) => $query->newReleases(), self::NEW_RELEASES),
             'categories' => $this->categories(),
             'featured' => $this->cards($request, fn (Builder $query) => $query->featured(), self::FEATURED),
             'resources' => DemoContent::teachingResources(),
-            'branches' => DemoContent::branches(),
+            'branches' => BranchResource::collection(Branch::query()->active()->ordered()->limit(3)->get())->resolve($request),
         ]);
     }
 

@@ -3,14 +3,12 @@
 namespace App\Support;
 
 /**
- * Contenido de demostración de la portada que todavía no tiene modelo propio.
+ * Contenido de la portada que todavía no tiene modelo propio.
  *
- * TEMPORAL. Los productos y las secciones del catálogo ya vienen de la base de
- * datos; aquí quedan solo las campañas del hero, los accesos a recursos y las
- * librerías, que aún no tienen tabla. Cuando la tengan, este archivo se elimina.
- *
- * Los datos que quedan son ficticios: las direcciones, horarios y teléfonos de
- * las librerías son marcadores de posición y no representan sucursales reales.
+ * TEMPORAL. El catálogo, las librerías y los recursos ya vienen de la base de
+ * datos; aquí quedan solo las campañas del hero y los accesos destacados a la
+ * sección de recursos, que se editan en código. Cuando tengan tabla propia,
+ * este archivo se elimina.
  */
 final class DemoContent
 {
@@ -36,7 +34,7 @@ final class DemoContent
                 'description' => 'Descubre Biblias, comentarios, guías y recursos para profundizar '
                     .'en la Palabra de Dios.',
                 'buttonLabel' => 'Ver colección',
-                'buttonHref' => '/biblias',
+                'buttonHref' => '/categorias/biblias',
                 'align' => 'start',
             ],
             [
@@ -102,62 +100,5 @@ final class DemoContent
                 'icon' => 'book',
             ],
         ];
-    }
-
-    /**
-     * Librerías. Datos de referencia: se reemplazan por la información oficial.
-     *
-     * @return array<int, array<string, string>>
-     */
-    public static function branches(): array
-    {
-        return [
-            [
-                'name' => 'Paulinas Santiago Centro',
-                'city' => 'Santiago',
-                'address' => 'Dirección por confirmar 1234, Santiago Centro',
-                'hours' => 'Lun a Vie 10:00–19:00 · Sáb 10:00–14:00',
-                'phone' => '+56 2 2000 0000',
-                'whatsapp' => '+56 9 0000 0000',
-                'href' => '/librerias/santiago-centro',
-            ],
-            [
-                'name' => 'Paulinas La Florida',
-                'city' => 'Santiago',
-                'address' => 'Dirección por confirmar 7639, La Florida',
-                'hours' => 'Lun a Vie 09:30–18:30 · Sáb 10:00–14:00',
-                'phone' => '+56 2 2000 0001',
-                'whatsapp' => '+56 9 0000 0001',
-                'href' => '/librerias/la-florida',
-            ],
-            [
-                'name' => 'Paulinas Valparaíso',
-                'city' => 'Valparaíso',
-                'address' => 'Dirección por confirmar 456, Valparaíso',
-                'hours' => 'Lun a Vie 10:00–18:30 · Sáb 10:00–13:30',
-                'phone' => '+56 32 200 0000',
-                'whatsapp' => '+56 9 0000 0002',
-                'href' => '/librerias/valparaiso',
-            ],
-        ];
-    }
-
-    /**
-     * Rutas que la portada enlaza y que todavía no tienen página propia.
-     *
-     * Sirve para registrarlas como marcador de posición y para reconstruir su
-     * título, de modo que ningún enlace de la Home termine en un 404.
-     *
-     * @return array<string, string> ruta => título
-     */
-    public static function placeholderLinks(): array
-    {
-        return collect(self::teachingResources())
-            ->mapWithKeys(fn (array $resource) => [$resource['href'] => $resource['title']])
-            ->merge(
-                collect(self::branches())
-                    ->mapWithKeys(fn (array $branch) => [$branch['href'] => $branch['name']])
-            )
-            ->all();
     }
 }

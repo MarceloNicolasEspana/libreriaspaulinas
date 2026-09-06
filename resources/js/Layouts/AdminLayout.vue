@@ -1,46 +1,67 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import { useInstitution } from '@/Composables/useInstitution';
-
-const { institution } = useInstitution();
-
-// Estructura preparada para el panel administrativo. Los ítems del menú se
-// agregarán junto con sus rutas y políticas de acceso en la fase de admin.
-const navigation = [];
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import FlashMessages from '@/Components/FlashMessages.vue';
+const page = usePage();
 </script>
-
 <template>
-    <div class="flex min-h-full bg-slate-100">
-        <aside class="hidden w-64 shrink-0 border-r border-slate-200 bg-white lg:block">
-            <div class="border-b border-slate-200 px-6 py-4">
-                <Link href="/" class="text-sm font-semibold text-brand-700">
-                    {{ institution.shortName }}
-                </Link>
-                <p class="text-xs text-slate-500">Administración</p>
-            </div>
+    <div class="min-h-screen bg-paper-50 text-brand-950 lg:flex">
+        <!--
+            El panel no debe llegar nunca a un buscador. robots.txt ya lo pide,
+            pero eso solo vale para el rastreo: la etiqueta cierra también la
+            indexación de una URL que se descubra por otro camino.
+        -->
+        <Head>
+            <meta name="robots" content="noindex,nofollow" />
+        </Head>
 
-            <nav v-if="navigation.length" class="space-y-1 p-4" aria-label="Navegación del panel">
-                <Link
-                    v-for="item in navigation"
-                    :key="item.href"
-                    :href="item.href"
-                    class="block rounded px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"
+        <aside class="hidden w-60 shrink-0 border-r border-paper-200 bg-white lg:block">
+            <div class="sticky top-0 flex max-h-screen flex-col gap-6 overflow-y-auto p-6">
+                <Link href="/admin" class="font-serif text-2xl font-semibold"
+                    >Paulinas
+                    <span class="block font-sans text-xs font-normal tracking-widest text-paper-600 uppercase"
+                        >Administración</span
+                    ></Link
                 >
-                    {{ item.label }}
-                </Link>
-            </nav>
+                <nav aria-label="Administración" class="flex flex-col gap-1">
+                    <Link
+                        v-for="item in page.props.adminNavigation"
+                        :key="item.href"
+                        :href="item.href"
+                        class="rounded-control px-3 py-2 text-sm hover:bg-brand-50"
+                        :class="page.url.split('?')[0] === item.href ? 'bg-brand-100 font-semibold' : ''"
+                        >{{ item.label }}</Link
+                    >
+                </nav>
+                <Link href="/" class="text-sm text-paper-600 underline">Ver sitio público</Link>
+            </div>
         </aside>
-
-        <div class="flex min-w-0 flex-1 flex-col">
-            <header class="border-b border-slate-200 bg-white px-6 py-4">
-                <h1 class="text-lg font-semibold text-slate-900">
-                    <slot name="header">Panel</slot>
-                </h1>
+        <div class="min-w-0 flex-1">
+            <header
+                class="flex flex-wrap items-center justify-between gap-3 border-b border-paper-200 bg-white px-5 py-4 sm:px-8"
+            >
+                <details class="lg:hidden">
+                    <summary class="cursor-pointer font-semibold">Menú del panel</summary>
+                    <nav aria-label="Administración móvil" class="mt-3 flex flex-col gap-2">
+                        <Link
+                            v-for="item in page.props.adminNavigation"
+                            :key="item.href"
+                            :href="item.href"
+                            class="py-1 text-sm"
+                            >{{ item.label }}</Link
+                        ><Link href="/">Ver sitio</Link>
+                    </nav>
+                </details>
+                <p class="text-sm text-paper-600">{{ page.props.auth.user?.name }}</p>
+                <Link
+                    :href="page.props.logoutHref"
+                    method="post"
+                    as="button"
+                    class="text-sm font-semibold underline underline-offset-4"
+                    >Cerrar sesión</Link
+                >
             </header>
-
-            <main class="flex-1 p-6">
-                <slot />
-            </main>
+            <FlashMessages />
+            <main class="mx-auto max-w-7xl px-5 py-8 sm:px-8"><slot /></main>
         </div>
     </div>
 </template>

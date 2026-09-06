@@ -1,7 +1,8 @@
 <script setup>
-import { Form, Head, Link } from '@inertiajs/vue3';
+import { Form, Link } from '@inertiajs/vue3';
 import BookCover from '@/Components/BookCover.vue';
 import Button from '@/Components/Button.vue';
+import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import Container from '@/Components/Container.vue';
 import { useCurrency } from '@/Composables/useCurrency';
 
@@ -14,11 +15,9 @@ const { format } = useCurrency();
 </script>
 
 <template>
-    <Head :title="seo.title">
-        <meta name="description" :content="seo.description" />
-    </Head>
-
     <Container class="py-10 sm:py-14 lg:py-16">
+        <Breadcrumbs :items="seo.breadcrumbs" />
+
         <div class="max-w-3xl">
             <p class="text-xs font-semibold tracking-[0.16em] text-accent-700 uppercase">Tu selección</p>
             <h1 class="mt-2 font-serif text-3xl font-semibold text-brand-900 sm:text-4xl">Carrito</h1>

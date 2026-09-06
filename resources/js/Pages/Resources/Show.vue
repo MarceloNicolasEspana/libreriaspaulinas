@@ -1,16 +1,17 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import Container from '@/Components/Container.vue';
 import BookIcon from '@/Components/Icons/BookIcon.vue';
 import DownloadIcon from '@/Components/Icons/DownloadIcon.vue';
-defineProps({ resource: { type: Object, required: true }, indexHref: { type: String, required: true } });
+defineProps({ seo: { type: Object, required: true }, resource: { type: Object, required: true } });
 </script>
 <template>
     <div>
-        <Head :title="resource.title"><meta name="description" :content="resource.description" /></Head>
         <Container class="py-14 sm:py-20">
-            <Link :href="indexHref" class="text-sm text-brand-800 underline underline-offset-4">Volver a recursos</Link>
-            <article class="mt-8 grid gap-10 lg:grid-cols-[1fr_22rem]">
+            <Breadcrumbs :items="seo.breadcrumbs" />
+
+            <article class="grid gap-10 lg:grid-cols-[1fr_22rem]">
                 <div>
                     <Link
                         :href="resource.categoryHref"
@@ -22,11 +23,11 @@ defineProps({ resource: { type: Object, required: true }, indexHref: { type: Str
                     </h1>
                     <dl class="my-7 flex flex-wrap gap-6 border-y border-paper-200 py-5 text-sm">
                         <div>
-                            <dt class="text-paper-500">Dirigido a</dt>
+                            <dt class="text-paper-600">Dirigido a</dt>
                             <dd class="mt-1 text-brand-900">{{ resource.audience || 'Toda la comunidad' }}</dd>
                         </div>
                         <div>
-                            <dt class="text-paper-500">Publicado</dt>
+                            <dt class="text-paper-600">Publicado</dt>
                             <dd class="mt-1 text-brand-900">
                                 <time :datetime="resource.published_at">{{ resource.date }}</time>
                             </dd>
@@ -39,6 +40,8 @@ defineProps({ resource: { type: Object, required: true }, indexHref: { type: Str
                         v-if="resource.thumbnail"
                         :src="resource.thumbnail"
                         :alt="resource.title"
+                        loading="lazy"
+                        decoding="async"
                         class="aspect-[4/3] w-full object-cover"
                     />
                     <div v-else class="grid aspect-[4/3] place-items-center bg-brand-100 text-brand-700">

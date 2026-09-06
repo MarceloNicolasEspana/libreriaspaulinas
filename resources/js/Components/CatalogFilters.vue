@@ -146,7 +146,7 @@ const isFiltered = computed(() =>
                 class="flex cursor-pointer list-none items-center justify-between font-medium text-brand-900 [&::-webkit-details-marker]:hidden"
             >
                 Sección
-                <ChevronDownIcon class="size-4 text-paper-400 transition-transform group-open:rotate-180" />
+                <ChevronDownIcon class="size-4 text-paper-500 transition-transform group-open:rotate-180" />
             </summary>
 
             <ul class="mt-3 space-y-1">
@@ -164,7 +164,7 @@ const isFiltered = computed(() =>
                         :aria-current="isSelected('categoria', category.value) ? 'true' : undefined"
                     >
                         <span>{{ category.label }}</span>
-                        <span class="shrink-0 text-xs text-paper-500">{{ category.count }}</span>
+                        <span class="shrink-0 text-xs text-paper-600">{{ category.count }}</span>
                     </Link>
 
                     <ul v-if="category.children.length" class="mt-1 ml-3 space-y-1 border-l border-paper-200 pl-2">
@@ -182,7 +182,7 @@ const isFiltered = computed(() =>
                                 :aria-current="isSelected('categoria', child.value) ? 'true' : undefined"
                             >
                                 <span>{{ child.label }}</span>
-                                <span class="shrink-0 text-xs text-paper-500">{{ child.count }}</span>
+                                <span class="shrink-0 text-xs text-paper-600">{{ child.count }}</span>
                             </Link>
                         </li>
                     </ul>
@@ -196,7 +196,7 @@ const isFiltered = computed(() =>
                 class="flex cursor-pointer list-none items-center justify-between font-medium text-brand-900 [&::-webkit-details-marker]:hidden"
             >
                 {{ facet.label }}
-                <ChevronDownIcon class="size-4 text-paper-400 transition-transform group-open:rotate-180" />
+                <ChevronDownIcon class="size-4 text-paper-500 transition-transform group-open:rotate-180" />
             </summary>
 
             <div v-if="facet.searchable && facet.options.length > VISIBLE" class="mt-3">
@@ -208,7 +208,7 @@ const isFiltered = computed(() =>
                     v-model="optionQuery[facet.key]"
                     type="search"
                     :placeholder="`Buscar ${facet.label.toLowerCase()}...`"
-                    class="h-9 w-full rounded-control border border-paper-200 px-3 text-sm text-paper-900 transition-colors placeholder:text-paper-500 focus:border-brand-400 focus:outline-none"
+                    class="h-9 w-full rounded-control border border-paper-200 px-3 text-sm text-paper-900 transition-colors placeholder:text-paper-600 focus:border-brand-400 focus:outline-none"
                 />
             </div>
 
@@ -227,11 +227,11 @@ const isFiltered = computed(() =>
                         :aria-current="isSelected(facet.key, option.value) ? 'true' : undefined"
                     >
                         <span>{{ option.label }}</span>
-                        <span class="shrink-0 text-xs text-paper-500">{{ option.count }}</span>
+                        <span class="shrink-0 text-xs text-paper-600">{{ option.count }}</span>
                     </Link>
                 </li>
 
-                <li v-if="!shown(facet).length" class="px-2 py-1.5 text-paper-500">Sin coincidencias.</li>
+                <li v-if="!shown(facet).length" class="px-2 py-1.5 text-paper-600">Sin coincidencias.</li>
             </ul>
 
             <button
@@ -259,11 +259,11 @@ const isFiltered = computed(() =>
                 class="flex cursor-pointer list-none items-center justify-between font-medium text-brand-900 [&::-webkit-details-marker]:hidden"
             >
                 Precio
-                <ChevronDownIcon class="size-4 text-paper-400 transition-transform group-open:rotate-180" />
+                <ChevronDownIcon class="size-4 text-paper-500 transition-transform group-open:rotate-180" />
             </summary>
 
             <form class="mt-3" @submit.prevent="applyPrice">
-                <p class="mb-3 text-xs text-paper-500">
+                <p class="mb-3 text-xs text-paper-600">
                     Entre {{ format(options.precio.min) }} y {{ format(options.precio.max) }}
                 </p>
 
@@ -278,11 +278,11 @@ const isFiltered = computed(() =>
                             min="0"
                             :max="options.precio.max"
                             placeholder="Desde"
-                            class="h-10 w-full rounded-control border border-paper-200 px-3 text-sm text-paper-900 transition-colors placeholder:text-paper-500 focus:border-brand-400 focus:outline-none"
+                            class="h-10 w-full rounded-control border border-paper-200 px-3 text-sm text-paper-900 transition-colors placeholder:text-paper-600 focus:border-brand-400 focus:outline-none"
                         />
                     </div>
 
-                    <span class="text-paper-400" aria-hidden="true">–</span>
+                    <span class="text-paper-500" aria-hidden="true">–</span>
 
                     <div class="flex-1">
                         <label :for="`${idPrefix}-precio-max`" class="sr-only">Precio máximo</label>
@@ -294,7 +294,7 @@ const isFiltered = computed(() =>
                             min="0"
                             :max="options.precio.max"
                             placeholder="Hasta"
-                            class="h-10 w-full rounded-control border border-paper-200 px-3 text-sm text-paper-900 transition-colors placeholder:text-paper-500 focus:border-brand-400 focus:outline-none"
+                            class="h-10 w-full rounded-control border border-paper-200 px-3 text-sm text-paper-900 transition-colors placeholder:text-paper-600 focus:border-brand-400 focus:outline-none"
                         />
                     </div>
                 </div>
@@ -314,10 +314,10 @@ const isFiltered = computed(() =>
             navegación y nosotros no inventamos datos para rellenarlas.
         -->
         <div v-if="options.pendientes.length" class="border-t border-paper-200 py-4">
-            <p class="font-medium text-paper-400">Próximamente</p>
+            <p class="font-medium text-paper-600">Próximamente</p>
 
             <ul class="mt-2 space-y-1">
-                <li v-for="pending in options.pendientes" :key="pending.value" class="px-2 py-1 text-paper-400">
+                <li v-for="pending in options.pendientes" :key="pending.value" class="px-2 py-1 text-paper-600">
                     {{ pending.label }}
                 </li>
             </ul>

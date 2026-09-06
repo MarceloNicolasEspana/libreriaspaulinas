@@ -24,11 +24,17 @@ class BranchResource extends JsonResource
             'slug' => $this->slug,
             'address' => $this->address,
             'commune' => $this->commune,
+            'city' => $this->commune,
             'region' => $this->region,
             'phone' => $this->phone,
             'whatsapp' => $this->whatsapp,
             'email' => $this->email,
             'openingHours' => $this->opening_hours,
+            'hours' => collect($this->opening_hours)
+                ->map(fn (array $hours): string => $hours['days'].' '.implode(', ', $hours['periods']))
+                ->join(' · '),
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
             'href' => route('branches.show', $this->resource, absolute: false),
             'phoneUrl' => $this->phone ? 'tel:+'.$this->digitsOnly($this->phone) : null,
             'whatsappUrl' => $this->whatsapp ? 'https://wa.me/'.$this->digitsOnly($this->whatsapp) : null,

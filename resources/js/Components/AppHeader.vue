@@ -71,13 +71,13 @@ const cartSummary = computed(() => page.props.cartSummary ?? { count: 0, href: '
                     </li>
 
                     <li class="hidden sm:block">
-                        <HeaderAction label="Mi cuenta">
+                        <HeaderAction label="Mi cuenta" unavailable>
                             <UserIcon class="size-5.5" />
                         </HeaderAction>
                     </li>
 
                     <li class="hidden sm:block">
-                        <HeaderAction label="Favoritos">
+                        <HeaderAction label="Favoritos" unavailable>
                             <HeartIcon class="size-5.5" />
                         </HeaderAction>
                     </li>

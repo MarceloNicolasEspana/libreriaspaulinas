@@ -41,7 +41,14 @@ const hasButton = computed(() => Boolean(props.buttonLabel && props.buttonHref))
 <template>
     <section v-if="active" class="relative overflow-hidden bg-brand-950 text-white">
         <!-- Imagen de fondo, solo en la composición centrada. -->
-        <img v-if="isBackground" :src="image" :alt="imageAlt" class="absolute inset-0 size-full object-cover" />
+        <img
+            v-if="isBackground"
+            :src="image"
+            :alt="imageAlt"
+            fetchpriority="high"
+            decoding="async"
+            class="absolute inset-0 size-full object-cover"
+        />
         <div v-if="isBackground" class="absolute inset-0 bg-brand-950/75" aria-hidden="true" />
 
         <!-- Halos cálidos: dan luz al bloque incluso sin imagen. -->
@@ -92,6 +99,8 @@ const hasButton = computed(() => Boolean(props.buttonLabel && props.buttonHref))
                     <img
                         :src="image"
                         :alt="imageAlt"
+                        fetchpriority="high"
+                        decoding="async"
                         class="aspect-[4/3] w-full rounded-card object-cover shadow-raised ring-1 ring-white/10"
                     />
                 </div>

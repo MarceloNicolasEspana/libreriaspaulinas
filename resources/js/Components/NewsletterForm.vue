@@ -38,7 +38,7 @@ const isInverse = computed(() => props.tone === 'inverse');
                 required
                 autocomplete="email"
                 placeholder="tu@correo.cl"
-                class="h-13 w-full min-w-0 flex-1 rounded-control border bg-white px-4 text-base text-brand-900 placeholder:text-paper-500 sm:text-sm"
+                class="h-13 w-full min-w-0 flex-1 rounded-control border bg-white px-4 text-base text-brand-900 placeholder:text-paper-600 sm:text-sm"
                 :class="isInverse ? 'border-transparent' : 'border-brand-200'"
             />
             <Button type="submit" size="lg" class="shrink-0">Suscribirme</Button>

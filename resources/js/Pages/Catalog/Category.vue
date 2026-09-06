@@ -1,5 +1,6 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import Container from '@/Components/Container.vue';
 import Pagination from '@/Components/Pagination.vue';
 import ProductGrid from '@/Components/ProductGrid.vue';
@@ -13,11 +14,9 @@ defineProps({
 </script>
 
 <template>
-    <Head :title="seo.title">
-        <meta name="description" :content="seo.description" />
-    </Head>
-
     <Container class="py-14 sm:py-16 lg:py-20">
+        <Breadcrumbs :items="seo.breadcrumbs" />
+
         <SectionHeader
             as="h1"
             :eyebrow="category.parent ? category.parent.name : 'Sección'"

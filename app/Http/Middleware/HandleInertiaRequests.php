@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Admin\Catalog;
 use App\Support\Cart\Cart;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -49,9 +50,17 @@ class HandleInertiaRequests extends Middleware
                 'href' => route('cart.index', absolute: false),
             ],
 
-            'auth' => [
-                'user' => $request->user(),
+            /*
+             * Solo el nombre: la prop viaja en el HTML de todas las páginas,
+             * también las públicas, y el correo o los indicadores de permisos
+             * de la cuenta no tienen por qué llegar al navegador.
+             */
+            'auth' => fn (): array => [
+                'user' => $request->user() ? ['name' => $request->user()->name] : null,
             ],
+            'adminNavigation' => fn (): array => $request->user()?->can('manage-admin')
+                ? Catalog::navigation() : [],
+            'logoutHref' => fn (): string => route('logout', absolute: false),
 
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),

@@ -1,5 +1,6 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
 import AppLogo from '@/Components/AppLogo.vue';
 import SearchBar from '@/Components/SearchBar.vue';
 import CartIcon from '@/Components/Icons/CartIcon.vue';
@@ -17,6 +18,9 @@ const props = defineProps({
 const emit = defineEmits(['close']);
 
 const { primary } = useNavigation();
+
+const page = usePage();
+const cartHref = computed(() => page.props.cartSummary?.href ?? '/carrito');
 
 function close() {
     emit('close');
@@ -77,26 +81,40 @@ const { panel } = useDismissablePanel(() => props.open, close);
                                 class="flex min-h-14 items-center justify-between gap-3 rounded-control px-3 font-medium text-brand-900 transition-colors hover:bg-brand-50 active:bg-brand-100"
                             >
                                 {{ item.label }}
-                                <ChevronRightIcon class="size-4.5 text-paper-400" />
+                                <ChevronRightIcon class="size-4.5 text-paper-500" aria-hidden="true" />
                             </Link>
                         </li>
                     </ul>
                 </nav>
 
                 <div class="grid grid-cols-3 gap-1 border-t border-brand-100 p-3">
+                    <!--
+                        La cuenta y los favoritos están anunciados en el diseño
+                        pero todavía no existen: se muestran deshabilitados en
+                        vez de responder con un botón mudo.
+                    -->
                     <button
                         v-for="action in [
                             { label: 'Mi cuenta', icon: UserIcon },
                             { label: 'Favoritos', icon: HeartIcon },
-                            { label: 'Carrito', icon: CartIcon },
                         ]"
                         :key="action.label"
                         type="button"
-                        class="flex min-h-16 flex-col items-center justify-center gap-1.5 rounded-control text-xs font-medium text-brand-800 transition-colors hover:bg-brand-50 active:bg-brand-100"
+                        disabled
+                        :aria-label="`${action.label} (próximamente)`"
+                        class="flex min-h-16 cursor-not-allowed flex-col items-center justify-center gap-1.5 rounded-control text-xs font-medium text-brand-800 opacity-40"
                     >
-                        <component :is="action.icon" class="size-5.5" />
+                        <component :is="action.icon" class="size-5.5" aria-hidden="true" />
                         {{ action.label }}
                     </button>
+
+                    <Link
+                        :href="cartHref"
+                        class="flex min-h-16 flex-col items-center justify-center gap-1.5 rounded-control text-xs font-medium text-brand-800 transition-colors hover:bg-brand-50 active:bg-brand-100"
+                    >
+                        <CartIcon class="size-5.5" aria-hidden="true" />
+                        Carrito
+                    </Link>
                 </div>
             </div>
         </Transition>

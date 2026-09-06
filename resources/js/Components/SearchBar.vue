@@ -74,7 +74,7 @@ function submit() {
             name="q"
             :autofocus="autofocus"
             placeholder="Buscar libros, autores, temas..."
-            class="w-full rounded-full border border-brand-200 bg-brand-50/60 pr-28 pl-11 text-paper-900 transition-colors duration-150 placeholder:text-paper-500 hover:border-brand-300 focus:border-brand-400 focus:bg-white focus:outline-none"
+            class="w-full rounded-full border border-brand-200 bg-brand-50/60 pr-28 pl-11 text-paper-900 transition-colors duration-150 placeholder:text-paper-600 hover:border-brand-300 focus:border-brand-400 focus:bg-white focus:outline-none"
             :class="props.size === 'hero' ? 'h-12 text-base' : 'h-11 text-sm'"
         />
 

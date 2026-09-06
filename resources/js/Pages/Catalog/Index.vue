@@ -1,8 +1,9 @@
 <script setup>
 import { computed, ref } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import CatalogFilters from '@/Components/CatalogFilters.vue';
 import CatalogToolbar from '@/Components/CatalogToolbar.vue';
+import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import Container from '@/Components/Container.vue';
 import EmptyState from '@/Components/EmptyState.vue';
 import FilterDrawer from '@/Components/FilterDrawer.vue';
@@ -44,11 +45,9 @@ const active = computed(() => activeCount());
 </script>
 
 <template>
-    <Head :title="seo.title">
-        <meta name="description" :content="seo.description" />
-    </Head>
-
     <Container size="wide" class="py-14 sm:py-16 lg:py-20">
+        <Breadcrumbs :items="seo.breadcrumbs" />
+
         <SectionHeader as="h1" eyebrow="Catálogo" :title="heading" :subtitle="subtitle" />
 
         <div class="lg:grid lg:grid-cols-[16rem_1fr] lg:gap-10">
